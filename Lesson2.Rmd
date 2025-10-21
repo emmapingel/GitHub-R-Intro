@@ -1,5 +1,5 @@
 ---
-title: "Pull Request"
+title: "GitHub Pull Request"
 author: "Emma Pingel"
 date: "2025-10-21"
 output: html_document
@@ -30,6 +30,7 @@ knitr::opts_chunk$set(echo = TRUE)
 6.  **REVIEW: Review your assigned pull request**. You should receive a notification either via GitHub (you can check by clicking the 'notifications' icon directly next to your profile photo in the upper right corner), or you will receive an email link to the email you registered your GitHub account to.
 
     Follow [these guidelines for reviewing a pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/reviewing-proposed-changes-in-a-pull-request), give some meaningful feedback, and when you're done 'Approve' the pull request (do NOT close or merge).
+
 
 
 
@@ -70,14 +71,4 @@ Using the new dataset created above, create a bar plot of precipitation for each
 ggplot(kna_long) +
   geom_col(aes(x = name, y = value)) + 
   facet_wrap(~County)
-```
-
-CHALLENGE:
-
-The chart above is messy since we have so many counties. Instead, use `map()` to create an individual bar plot for each County (hint: create a vector of county names from the data, and building off the ggplot code you made above, add in a line to `filter()` out each county (i.e., .x) before creating the plot. AND, no more need to `facet_wrap()` here).
-
-There are many ways to do this!
-
-```{r}
-
 ```
