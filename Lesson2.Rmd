@@ -1,0 +1,83 @@
+---
+title: "Pull Request"
+author: "Emma Pingel"
+date: "2025-10-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#### Instructions: Follow VERY carefully and in order!
+
+1.  **FORK:** If you haven't yet, **fork** the Intro-Git-GitHub repo from our class GitHub organization (ENV-Data-Sci-FA25).
+
+    -   Make sure your local repository has all the files/changes your instructors added. To do so go to **your** forked Intro-Git-GitHub repo, in the bar along the top click the 'Sync' dropdown and if the button says 'Update Branch', click it (*you likely will not need to worry about this step but just in case..)*.
+
+2.  **CLONE:** In your forked repo on GitHub (make sure it says {your_username}/Intro-Git-GitHub in the URL) copy the https code and follow the steps we learned to clone a repo from GitHub to your computer.
+
+    -   **Be sure you do not clone into another GitHub folder.** Git does not know how to communicate with GitHub if it is in another git-tracked folder.
+
+3.  **CODE:** Complete the sequence of coding tasks below (to the best of your ability) directly in this .Rmd file.
+
+4.  **Save and PUSH**: Save, Add, Commit, and Push your changes to GitHub.
+
+5.  **PULL REQUEST**: Go to **your** forked Intro-Git-GitHub Repo, click the 'Contribute' drop down at the top and click the 'Open Pull Request' button (if this is grayed out that means you have not pushed any changes to GitHub yet).
+
+    -   Provide a title, short description/notes of your changes, and most importantly under 'Reviewers' on the right, type in the username of your **assigned PR reviewer** (which you can find in the 'PR_reviewer_assignments.md' document in this repository. When you are all set, submit the pull request.
+
+6.  **REVIEW: Review your assigned pull request**. You should receive a notification either via GitHub (you can check by clicking the 'notifications' icon directly next to your profile photo in the upper right corner), or you will receive an email link to the email you registered your GitHub account to.
+
+    Follow [these guidelines for reviewing a pull request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/reviewing-changes-in-pull-requests/reviewing-proposed-changes-in-a-pull-request), give some meaningful feedback, and when you're done 'Approve' the pull request (do NOT close or merge).
+
+
+
+#### Coding Exercises
+
+Work through the steps below to complete this exercise (to the best of your ability) and then save, add, commit and push this file with your coding edits to your forked repo and follow the instructions above for completing the assignment via creating and reviewing a pull request.
+
+Load in the tidyverse (only package(s) needed for this exercise:
+```{r}
+library(tidyverse)
+```
+
+Read in the 'kenya_county_climates.csv' in the 'data/' folder and assign it to an environmental variable.
+```{r}
+kna_climates <- read.csv("Intro-Git-Github/data/kenya_county_climates.csv")
+```
+
+Write a chain of operations that does the following:
+1.  `select()` just the columns that have "Precipitation" in the name (so we are only interested in the precipitation data), AND the 'County' column.
+2.  `filter()` all the rows where 'Precipitation_585_90' is **greater than** the mean "Precipitation_585_90" for all counties.
+3.  `pivot_longer()` so we have one column for all precip values and one column with the value's associated variables (while keeping County as its own column too).
+```{r}
+kna_long <- kna_climates %>%
+  select(contains("Precipitation"), County) %>%
+  filter(Precipitation_585_90 > mean(Precipitation_585_90)) %>% 
+  pivot_longer(-County)
+```
+
+Question: How many counties have predicted precip values greater than the total county average?
+```{r}
+kna_long %>%
+  count()
+# 110 counties predicted precipitation values greater than the "Precipitation_585_90" mean for all counties
+```
+
+Using the new dataset created above, create a bar plot of precipitation for each time frame for each county using `facet_wrap()`
+```{r}
+ggplot(kna_long) +
+  geom_col(aes(x = name, y = value)) + 
+  facet_wrap(~County)
+```
+
+CHALLENGE:
+
+The chart above is messy since we have so many counties. Instead, use `map()` to create an individual bar plot for each County (hint: create a vector of county names from the data, and building off the ggplot code you made above, add in a line to `filter()` out each county (i.e., .x) before creating the plot. AND, no more need to `facet_wrap()` here).
+
+There are many ways to do this!
+
+```{r}
+
+```
