@@ -1,0 +1,51 @@
+---
+title: "Coding Exercises"
+author: "Emma Pingel"
+date: "2025-10-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+source("Setup.R")
+```
+
+#### Coding Exercises
+```{r}
+# import dataset from lterdatasampler package
+data("knz_bison")
+
+# create new column with individual age at observation
+knz_bison$age <- 1994-(knz_bison$animal_yob)
+
+# write a function to first filter for weights > 1000
+large <- function() {
+  knz_bison %>%
+    filter(animal_weight > 1000)
+}
+
+# visualize weight distribution between sexes 
+ggplot(knz_bison) +
+  geom_boxplot(aes(x = animal_sex, y = animal_weight)) + 
+  labs(title = "Weight Distribution of Bison", 
+       subtitle = "Comparing Male & Female Individuals", 
+       x = "Sex", y = "Weight") + 
+  theme_bw()
+
+# conduct a t-test to determine significance
+library(rstatix)
+
+knz_bison %>% 
+  levene_test(animal_weight ~ animal_sex)
+
+hist(knz_bison$animal_weight)
+
+knz_bison %>%
+  levene_test(log(animal_weight) ~ animal_sex)
+
+knz_bison %>%
+  mutate(weight_log = log(animal_weight)) %>% 
+  t_test(weight_log ~ animal_sex, var.equal = TRUE, detailed = TRUE)
+```
+Because the p-value (2.68E-22) is less than alpha (0.05), I can reject the null hypothesis and conclude that the animal sex does have a significant impact on the individual's weight. 
+
